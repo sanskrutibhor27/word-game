@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jumbled Word Game</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: linear-gradient(#C7395F, #DED4E8, #E8BA40);
+    }
+
+    .game-container {
+      width: 90%;
+      max-width: 400px;
+      padding: 30px;
+      background-color: #fff;
+      border: 5px solid #e75480;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      animation: fade-in 1.5s;
+    }
+
+    .jumbled-word {
+      font-size: 24px;
+      font-weight: bold;
+      color: #AA336A;
+      margin-bottom: 25px;
+    }
+
+    .form-input {
+      width: 100%;
+      height: 40px;
+      padding: 10px;
+      margin-bottom: 15px;
+      font-size: 18px;
+      border: 1px solid #AA336A;
+      border-radius: 10px;
+    }
+
+    .submit-btn {
+      background-color: #AA336A;
+      color: white;
+      padding: 10px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #902b58;
+    }
+
+    .result {
+      font-size: 20px;
+      color: #AA336A;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game-container">
+    <p class="jumbled-word" id="jumbledWord">Guess the word: </p>
+    <input type="text" id="answer" placeholder="Enter your answer" class="form-input">
+    <button onclick="checkAnswer()" class="submit-btn">Submit</button>
+    <p class="result" id="result"></p>
+  </div>
+
+  <script>
+    const words = ['code', 'java', 'python', 'algorithm', 'debug', 'php', 'function', 'strings', 'array'];
+
+    let originalWord, jumbledWord;
+
+    function getNewWord() {
+      originalWord = words[Math.floor(Math.random() * words.length)];
+      jumbledWord = originalWord.split('').sort(() => 0.5 - Math.random()).join('');
+
+      while (jumbledWord === originalWord) {
+        jumbledWord = originalWord.split('').sort(() => 0.5 - Math.random()).join('');
+      }
+
+      document.getElementById('jumbledWord').textContent = `Guess the word: ${jumbledWord}`;
+      document.getElementById('answer').value = '';
+      document.getElementById('result').textContent = '';
+    }
+
+    function checkAnswer() {
+      const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+      const result = document.getElementById('result');
+
+      if (userAnswer === originalWord.toLowerCase()) {
+        result.textContent = "🎉 Congratulations! You are correct!";
+        result.style.color = "green";
+      } else {
+        result.textContent = "❌ Oops! Try again.";
+        result.style.color = "#AA336A";
+      }
+
+      setTimeout(getNewWord, 2000);
+    }
+
+    // Load first word
+    getNewWord();
+  </script>
+
+</body>
+</html>
